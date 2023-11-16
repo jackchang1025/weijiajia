@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  db-host:
+    image: mariadb:10.4.28
+    environment:
+      MYSQL_ROOT_PASSWORD: 'ds_mall'
+      MYSQL_DATABASE: 'ds_mall'
+      MYSQL_USER: 'ds_mall'
+      MYSQL_PASSWORD: 'ds_mall'
+      MYSQL_PORT: 3306
+    ports:
+      - "3308:3306"  # 添加这行以映射端口 3307 防止与其他数据库端口冲突
+    volumes:
+      - ./ds_mall.sql:/docker-entrypoint-initdb.d/init.sql # 导入数据库 在 docker-compose.yml 文件中，使用 volumes 映射该 SQL 文件到容器内的 /docker-entrypoint-initdb.d 目录。MariaDB 容器启动时会自动执行该目录下的所有 .sql 文件
+  db-form:
+    image: mariadb:10.4.28
+    environment:
+      MYSQL_ROOT_PASSWORD: 'ds_mall'
+      MYSQL_DATABASE: 'ds_mall'
+      MYSQL_USER: 'ds_mall'
+      MYSQL_PASSWORD: 'ds_mall'
+      MYSQL_PORT: 3306
+    ports:
+      - "3309:3306"  # 添加这行以映射端口 3307 防止与其他数据库端口冲突
+    volumes:
+      - ./ds_mall.sql:/docker-entrypoint-initdb.d/init.sql # 导入数据库
