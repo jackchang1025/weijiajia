@@ -84,6 +84,9 @@ SHOW MASTER STATUS;
 ```
 ![image](host/status.png)
 记录返回的 File 和 Position 值，这些将用于从数据库的配置。
+返回的 Position 值表示当前二进制日志（binlog）文件的写入位置。
+这个位置会随着主数据库上发生的每一个变更（如插入、更新、删除等操作）而更新。
+因此，当在从服务器上执行 CHANGE MASTER TO 命令后，主数据库的 Position 可能已经发生变化
 
 ### 配置从数据库
 
@@ -98,6 +101,7 @@ apt-get update && apt-get install -y vim && vim /etc/mysql/my.cnf
 
 去掉上面配置的注释
 - 设置 server-id 为唯一值（例如 2）。
+- replicate-do-db=ds_mall 在 [mysqld] 部分添加 replicate-do-db 选项，指定您想要复制的数据库名称
 - 添加 replicate-ignore-db = mysql 指定忽略主数据库的 mysql 数据库。
 
 #### 重启从数据库容器
